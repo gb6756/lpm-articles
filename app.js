@@ -236,6 +236,7 @@ window.addEventListener('click', function(e) {
 */
 // --- CHARGEMENT AUTOMATIQUE DEPUIS GITHUB ---
 window.addEventListener('DOMContentLoaded', function() {
+	alert('ok');
     const statusEl = document.getElementById('status');
     if (statusEl) {
         statusEl.style.color = 'black';
