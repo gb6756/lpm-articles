@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles LPM</title>
+    <title>LPM-Articles</title>
     <!-- Parseur CSV spécialisé -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 	<link rel="stylesheet" media="screen" href="style.css">
@@ -14,54 +14,36 @@
 
 <div class="container">
     <header>
-        <h1 style="margin:0;">Article Le Petit Moulinais</h1>
+        <h1 style="margin:0;">Articles Petit Moulinais</h1>
     </header>
+
+    <!-- Zone de sélection du fichier local -->
+    <div class="card" style="background: #eef2f7; border-color: #cbd5e1;">
+        <label style="display:block; font-weight:bold; margin-bottom:8px;">📁 Sélectionnez votre fichier CSV local (ex: liens-articles) :</label>
+        <input type="file" id="csvFileInput" accept=".csv" style="padding: 5px; background: white; border: 1px solid #ccc; border-radius: 4px;">
+        <span id="status" style="margin-left: 15px; font-weight: bold; font-size: 0.9rem;"></span>
+    </div>
+
     <!-- Filtres -->
     <div class="card">
-        <div class="filter-header">
-            <h3>🔍 Filtres de recherche</h3>
-            <!-- NOUVEAU BOUTON RÉINITIALISER -->
-            <button class="btn-reset" onclick="resetFilters()">🔄 Effacer les filtres</button>
-        </div>
+        <h3 style="margin-top:0;">🔍 Filtres de recherche</h3>
         <div class="filter-grid">
-            <div class="filter-item"><label>Numéro</label><input type="text" maxlength="3" size="3" id="fNumero" oninput="applyFilters()"></div>
-			<div class="filter-item"><label>Année</label><input type="text" id="fAnnee" oninput="applyFilters()"></div>
-			<div class="filter-item"><label>Mois</label><input type="text" id="fMois" oninput="applyFilters()"></div>
-            <div class="filter-item"><label>Organisme Auteur</label><input type="text" id="fAuteur" oninput="applyFilters()"></div>
-            <div class="filter-item"><label>Titre</label><input type="text" id="fTitre" oninput="applyFilters()"></div>
-            <div class="filter-item"><label>Mot / Expression</label><input type="text" id="fMotsCle" placeholder="Ex: Noël,crêche..." oninput="applyFilters()"></div>
+            <div class="filter-item"><label>Numéro</label><input type="text" id="fnumero" oninput="applyFilters()"></div>
+            <div class="filter-item"><label>Année</label><input type="text" id="fannee" oninput="applyFilters()"></div>
+            <div class="filter-item"><label>Mois</label><input type="text" id="fmois" oninput="applyFilters()"></div>
+            <div class="filter-item"><label>Auteur</label><input type="text" id="fauteur" oninput="applyFilters()"></div>			
+			<div class="filter-item"><label>Titre</label><input type="text" id="ftitre" oninput="applyFilters()"></div>
+			<div class="filter-item"><label>Mots clés</label><input type="text" id="fmotscle" oninput="applyFilters()"></div>	
         </div>
     </div>
-	<!-- BANDEAU COMPTEUR DE RÉSULTATS -->
 	<div class="results-info">
-		<span id="bookCount">Chargement des articles...</span>
+		<span id="linkCount">Chargement du catalogue...</span>
 	</div>
-	<!-- Grille des articles -->
-	<div id="ArticlesGrid" class="Articles-grid"></div>
-
-	<!-- Pagination du bas -->
-	<div id="pagination" class="pagination-container"></div>
-	</div>
-
-<!-- Modal / Pop-up -->
-<!-- pop up
-<div class="modal-overlay" id="modal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">&times;</button>
-        <h2 id="mTitre" style="color:var(--primary); margin-top:0;"></h2>
-        <p id="mAuteur" style="color:var(--accent); font-weight:bold;"></p>
-        <hr>
-        <p><b>Cote :</b> <span id="mCote" class="cote-badge"></span> | <b>Type :</b> <span id="mType"></span></p>
-        <p><b>Disponibilité :</b> <span id="mDispo"></span> | <b>Fonds :</b> <span id="mFond"></span></p>
-        <p><b>Date / Édition :</b> <span id="mDateEdit"></span> | <b>Tome :</b> <span id="mTome"></span></p>
-        <p><b>Thèmes :</b> <span id="mTheme"></span></p>
-        <div style="background:#f8fafc; padding:12px; border-radius:6px; margin-top:15px; border:1px solid #e2e8f0;">
-            <b>Résumé :</b>
-            <p id="mResume" style="margin-top:5px; white-space:pre-wrap; line-height: 1.5;"></p>
-        </div>
-    </div>
-</div>
--->
+	<div id="articlesGrid" class="articles-grid"></div>
+	<!-- NOUVEAU : Zone de pagination -->
+<div id="pagination" class="pagination-container"></div>
 <script type="text/javascript" src="app.js"></script>
+<script>
+</script>
 </body>
 </html>
