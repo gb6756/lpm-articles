@@ -154,69 +154,47 @@ function cleanString(str) {
 }
 // --- INITIALISATION AU CHARGEMENT DE LA PAGE ---
 window.addEventListener('DOMContentLoaded', function() {
-    // 1. Restaurer la mémoire si elle existe
-    try {
-        const savedData = localStorage.getItem('articles_datas');
-        if (savedData) {
-            allArticles = JSON.parse(savedData);
-            const statusEl = document.getElementById('status');
-            if (statusEl) {
-                statusEl.style.color = '#16a34a';
-                statusEl.textContent = `✅ ${allArticles.length} liens chargés automatiquement !`;
-            }
-            applyFilters();
-        }
-    } catch (e) {
-        console.warn("Erreur de lecture mémoire :", e);
+    const statusEl = document.getElementById('status');
+
+    if (statusEl) {
+        statusEl.style.color = '#475569';
+        statusEl.textContent = "Chargement du catalogue...";
     }
 
-    // 2. Écouteur sur le bouton de fichier CSV
-    const fileInput = document.getElementById('csvFileInput');
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const statusEl = document.getElementById('status');
-            if (statusEl) {
-                statusEl.style.color = 'black';
-                statusEl.textContent = "Analyse du fichier...";
-            }
-
-            Papa.parse(file, {
+    fetch('lpm-articles.csv')
+        .then(response => {
+            if (!response.ok) throw new Error("Fichier introuvable");
+            return response.text();
+        })
+        .then(csvText => {
+            Papa.parse(csvText, {
                 header: true,
 				delimiter: "@",
                 skipEmptyLines: true,
                 complete: function(res) {
                     if (res.data && res.data.length > 0) {
-                        allArticles = res.data;
-                        try {
-                            localStorage.setItem('articles_datas', JSON.stringify(allArticles));
-                            if (statusEl) {
-                                statusEl.style.color = '#16a34a';
-                                statusEl.textContent = `✅ ${allArticles.length} articles chargés et enregistrés !`;
-                            }
-                        } catch (err) {
-                            if (statusEl) {
-                                statusEl.style.color = '#16a34a';
-                                statusEl.textContent = `✅ ${allArticles.length} Articles chargés !`;
-                            }
+                        allLinks = res.data;
+                        if (statusEl) {
+                            statusEl.style.color = '#16a34a';
+                            statusEl.textContent = `✅ ${allArticles.length} liens disponibles`;
                         }
-                    applyFilters();
+
+                        // Écouteurs d'événements sur les champs de filtrage
+                        applyFilters();
                     } else {
                         if (statusEl) {
                             statusEl.style.color = '#dc2626';
-                            statusEl.textContent = "❌ Fichier vide ou illisible.";
+                            statusEl.textContent = "❌ Le fichier CSV semble vide.";
                         }
-                    }
-                },
-                error: function() {
-                    if (statusEl) {
-                        statusEl.style.color = '#dc2626';
-                        statusEl.textContent = "❌ Erreur de lecture.";
                     }
                 }
             });
+        })
+        .catch(err => {
+            console.error(err);
+            if (statusEl) {
+                statusEl.style.color = '#dc2626';
+                statusEl.textContent = "❌ Impossible de charger le catalogue.";
+            }
         });
-    }
 });
