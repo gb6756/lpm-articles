@@ -173,7 +173,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 skipEmptyLines: true,
                 complete: function(res) {
                     if (res.data && res.data.length > 0) {
-                        allLinks = res.data;
+                        allArticles = res.data;
                         if (statusEl) {
                             statusEl.style.color = '#16a34a';
                             statusEl.textContent = `✅ ${allArticles.length} liens disponibles`;
